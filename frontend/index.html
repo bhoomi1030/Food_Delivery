@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FoodDash – Order food online</title>
+  <meta name="description" content="FoodDash: discover restaurants, build a cart, apply coupons and track your order.">
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#/" data-testid="brand">🍽️ Food<span>Dash</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="#/" data-nav="home">Restaurants</a>
+        <a href="#/orders" data-nav="orders" data-testid="nav-orders">My orders</a>
+      </nav>
+      <div class="header-actions">
+        <a class="cart-link" href="#/checkout" data-testid="cart-link" aria-label="Open cart">
+          🛒 <span class="cart-badge" data-testid="cart-count" hidden>0</span>
+        </a>
+        <div id="auth-area" class="auth-area"></div>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" class="container" aria-live="polite"></main>
+
+  <div id="cart-bar" class="cart-bar" hidden></div>
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+  <div id="modal-root"></div>
+
+  <footer class="site-footer">
+    <div class="container">FoodDash · a full-stack demo (FastAPI + SQLAlchemy + vanilla JS)</div>
+  </footer>
+
+  <script type="module" src="/static/js/app.js"></script>
+</body>
+</html>
