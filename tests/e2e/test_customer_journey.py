@@ -238,6 +238,9 @@ def test_full_order_journey_place_track_and_cancel(page):
     tid(page, "password").fill("password123")
     tid(page, "auth-submit").click()
     expect(tid(page, "cart-restaurant")).to_have_text("Spice Route")
+    # The coupon must survive the login redirect.
+    expect(tid(page, "coupon-applied")).to_contain_text("TENOFF")
+    expect(tid(page, "bill-discount")).to_have_text("−₹44")
 
     # Address validation
     tid(page, "address").fill("short")

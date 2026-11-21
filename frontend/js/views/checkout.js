@@ -5,10 +5,14 @@ import { billRows, stepper, toast, vegDot } from "../components.js";
 import { getState } from "../store.js";
 import { esc, inr, uuid } from "../utils.js";
 
+// Survives the login redirect (the view is rebuilt), cleared once an order is placed.
+let savedCoupon = "";
+
 export async function checkoutView(root) {
   const { auth, cart } = getState();
 
   if (cart.items.length === 0) {
+    savedCoupon = "";
     root.innerHTML = `
       <div class="empty" data-testid="empty-cart"><div class="big">🛒</div>
         <h2>Your cart is empty</h2><p>Add something tasty from a restaurant.</p>
@@ -16,7 +20,7 @@ export async function checkoutView(root) {
     return;
   }
 
-  let couponCode = "";
+  let couponCode = savedCoupon;
   let bill = null;
   let busy = false;
   let idempotencyKey = uuid(); // one key per checkout attempt -> safe retries
@@ -34,6 +38,7 @@ export async function checkoutView(root) {
         bill = null;
       }
     }
+    savedCoupon = couponCode;
   }
 
   const coupons = await api.coupons().catch(() => []);
@@ -104,6 +109,7 @@ export async function checkoutView(root) {
     try {
       const order = await api.placeOrder({ ...cartPayload(couponCode), delivery_address: address }, idempotencyKey);
       clearCart();
+      savedCoupon = "";
       toast("Order placed! 🎉", "success");
       location.hash = `#/orders?placed=${order.id}`;
     } catch (err) {
